@@ -16,7 +16,7 @@
 1. Клонировать репозиторий
 
    ```shell
-   git clone
+   git clone git@github.com:AlenaIsmagilova/job-board.git
    ```
 
 2. Запустить команду
