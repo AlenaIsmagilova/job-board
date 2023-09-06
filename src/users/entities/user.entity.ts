@@ -24,7 +24,7 @@ export class User {
   phoneNumber: string;
 
   //любому юзеру может соответствовать какое-то количество откликов, а любому отклику соответствует набор юзеров
-  @ManyToMany(() => Response, (response) => response.users)
+  @OneToMany(() => Response, (response) => response.user)
   responses: Response[];
 
   @OneToMany(() => Vacancy, (vacancy) => vacancy.owner)

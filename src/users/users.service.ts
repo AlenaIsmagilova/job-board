@@ -28,4 +28,8 @@ export class UsersService {
 
     return createdUser;
   }
+
+  async findById(id: number): Promise<User> {
+    return await this.userRepository.findOneBy({ id });
+  }
 }

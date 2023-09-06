@@ -1,26 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UsersService } from 'src/users/users.service';
+import { VacanciesService } from 'src/vacancies/vacancies.service';
+import { Repository } from 'typeorm';
 import { CreateResponseDto } from './dto/create-response.dto';
-import { UpdateResponseDto } from './dto/update-response.dto';
+import { Response } from './entities/response.entity';
 
 @Injectable()
 export class ResponsesService {
-  create(createResponseDto: CreateResponseDto) {
-    return 'This action adds a new response';
-  }
+  constructor(
+    @InjectRepository(Response)
+    private responseRepository: Repository<Response>,
+    private usersService: UsersService,
+    private vacanciesService: VacanciesService,
+  ) {}
+  async create(
+    userId: number,
+    vacancyId: number,
+    createResponseDto: CreateResponseDto,
+  ) {
+    const currentUser = await this.usersService.findById(userId);
 
-  findAll() {
-    return `This action returns all responses`;
-  }
+    if (!currentUser) {
+      throw new NotFoundException('Укажите корректный id пользователя');
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} response`;
-  }
+    const currentVacancy = await this.vacanciesService.findOneById(vacancyId);
 
-  update(id: number, updateResponseDto: UpdateResponseDto) {
-    return `This action updates a #${id} response`;
-  }
+    if (!currentVacancy) {
+      throw new NotFoundException('Укажите корректный id вакансии');
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} response`;
+    const createdResponse = await this.responseRepository.create({
+      ...createResponseDto,
+      user: currentUser,
+      viewed: true,
+      vacancy: currentVacancy,
+    });
+
+    await this.responseRepository.save(createdResponse);
+
+    return createdResponse;
   }
 }

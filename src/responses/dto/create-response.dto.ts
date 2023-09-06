@@ -1,6 +1,9 @@
-import { IsBoolean } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateResponseDto {
-  @IsBoolean()
-  viewed: boolean;
+  @IsNotEmpty()
+  userId: number;
+
+  @IsNotEmpty()
+  vacancyId: number;
 }

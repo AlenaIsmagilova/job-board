@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   Entity,
   JoinTable,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -15,11 +14,12 @@ export class Response {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => User, (user) => user.responses)
+  @ManyToOne(() => User, (user) => user.responses)
   @JoinTable()
-  users: User[];
+  user: User;
 
   @ManyToOne(() => Vacancy, (vacancy) => vacancy.responses)
+  @JoinTable()
   vacancy: Vacancy;
 
   @Column({ default: false })

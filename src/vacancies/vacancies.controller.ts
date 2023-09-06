@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Req } from '@nestjs/common';
 import { VacanciesService } from './vacancies.service';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
 import { Vacancy } from './entities/vacancy.entity';
@@ -9,8 +9,11 @@ export class VacanciesController {
   constructor(private readonly vacanciesService: VacanciesService) {}
 
   @Post()
-  create(@Body() createVacancyDto: CreateVacancyDto): Promise<Vacancy> {
-    return this.vacanciesService.create(createVacancyDto);
+  create(
+    id: number,
+    @Body() createVacancyDto: CreateVacancyDto,
+  ): Promise<Vacancy> {
+    return this.vacanciesService.create(id, createVacancyDto);
   }
 
   @Patch()
