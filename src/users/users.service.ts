@@ -12,7 +12,9 @@ export class UsersService {
   ) {}
 
   async findAll() {
-    const users = await this.userRepository.find();
+    const users = await this.userRepository.find({
+      relations: ['responses', 'vacancies'],
+    });
 
     if (users.length === 0) {
       throw new UnauthorizedException();

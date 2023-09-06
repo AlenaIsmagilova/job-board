@@ -21,4 +21,7 @@ export class CreateVacancyDto {
   @IsString({ each: true })
   @ArrayMinSize(1)
   skills: string[];
+
+  @IsNotEmpty()
+  userId: number;
 }

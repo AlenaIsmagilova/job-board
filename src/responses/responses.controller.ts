@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Patch } from '@nestjs/common';
 import { ResponsesService } from './responses.service';
 import { CreateResponseDto } from './dto/create-response.dto';
 
@@ -13,5 +13,10 @@ export class ResponsesController {
     @Body() createResponseDto: CreateResponseDto,
   ) {
     return this.responsesService.create(userId, vacancyId, createResponseDto);
+  }
+
+  @Patch()
+  update(responseId: number) {
+    return this.responsesService.setResponseViewed(responseId);
   }
 }

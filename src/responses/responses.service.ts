@@ -14,6 +14,7 @@ export class ResponsesService {
     private usersService: UsersService,
     private vacanciesService: VacanciesService,
   ) {}
+
   async create(
     userId: number,
     vacancyId: number,
@@ -34,12 +35,15 @@ export class ResponsesService {
     const createdResponse = await this.responseRepository.create({
       ...createResponseDto,
       user: currentUser,
-      viewed: true,
       vacancy: currentVacancy,
     });
 
     await this.responseRepository.save(createdResponse);
 
     return createdResponse;
+  }
+
+  async setResponseViewed(responseId: number): Promise<void> {
+    await this.responseRepository.update(responseId, { viewed: true });
   }
 }
