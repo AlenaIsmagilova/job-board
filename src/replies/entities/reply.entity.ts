@@ -10,15 +10,15 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Response {
+export class Reply {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.responses)
+  @ManyToOne(() => User, (user) => user.replies)
   @JoinTable()
   user: User;
 
-  @ManyToOne(() => Vacancy, (vacancy) => vacancy.responses)
+  @ManyToOne(() => Vacancy, (vacancy) => vacancy.replies)
   @JoinTable()
   vacancy: Vacancy;
 

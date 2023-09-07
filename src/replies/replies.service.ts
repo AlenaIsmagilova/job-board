@@ -3,14 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
 import { VacanciesService } from 'src/vacancies/vacancies.service';
 import { Repository } from 'typeorm';
-import { CreateResponseDto } from './dto/create-response.dto';
-import { Response } from './entities/response.entity';
+import { CreateReplyDto } from './dto/create-reply.dto';
+import { Reply } from './entities/reply.entity';
 
 @Injectable()
-export class ResponsesService {
+export class RepliesService {
   constructor(
-    @InjectRepository(Response)
-    private responseRepository: Repository<Response>,
+    @InjectRepository(Reply)
+    private replyRepository: Repository<Reply>,
     private usersService: UsersService,
     private vacanciesService: VacanciesService,
   ) {}
@@ -18,7 +18,7 @@ export class ResponsesService {
   async create(
     userId: number,
     vacancyId: number,
-    createResponseDto: CreateResponseDto,
+    createReplyDto: CreateReplyDto,
   ) {
     const currentUser = await this.usersService.findById(userId);
 
@@ -32,18 +32,18 @@ export class ResponsesService {
       throw new NotFoundException('Укажите корректный id вакансии');
     }
 
-    const createdResponse = await this.responseRepository.create({
-      ...createResponseDto,
+    const createdReply = await this.replyRepository.create({
+      ...createReplyDto,
       user: currentUser,
       vacancy: currentVacancy,
     });
 
-    await this.responseRepository.save(createdResponse);
+    await this.replyRepository.save(createdReply);
 
-    return createdResponse;
+    return createdReply;
   }
 
-  async setResponseViewed(responseId: number): Promise<void> {
-    await this.responseRepository.update(responseId, { viewed: true });
+  async setReplyViewed(replyId: number): Promise<void> {
+    await this.replyRepository.update(replyId, { viewed: true });
   }
 }

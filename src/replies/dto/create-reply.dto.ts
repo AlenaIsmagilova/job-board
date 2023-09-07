@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateResponseDto {
+export class CreateReplyDto {
   @IsNotEmpty()
   userId: number;
 

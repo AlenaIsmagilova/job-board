@@ -1,4 +1,4 @@
-import { Response } from 'src/responses/entities/response.entity';
+import { Reply } from 'src/replies/entities/reply.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
@@ -27,8 +27,8 @@ export class Vacancy {
   @ManyToOne(() => User, (user) => user.vacancies)
   owner: User;
 
-  @OneToMany(() => Response, (response) => response.vacancy)
-  responses: Response[];
+  @OneToMany(() => Reply, (reply) => reply.vacancy)
+  replies: Reply[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

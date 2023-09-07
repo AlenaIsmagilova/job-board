@@ -6,7 +6,7 @@ import {
   ManyToMany,
   OneToMany,
 } from 'typeorm';
-import { Response } from 'src/responses/entities/response.entity';
+import { Reply } from 'src/replies/entities/reply.entity';
 import { Vacancy } from 'src/vacancies/entities/vacancy.entity';
 
 @Entity()
@@ -24,8 +24,8 @@ export class User {
   phoneNumber: string;
 
   //любому юзеру может соответствовать какое-то количество откликов, а любому отклику соответствует набор юзеров
-  @OneToMany(() => Response, (response) => response.user)
-  responses: Response[];
+  @OneToMany(() => Reply, (reply) => reply.user)
+  replies: Reply[];
 
   @OneToMany(() => Vacancy, (vacancy) => vacancy.owner)
   vacancies: Vacancy[];

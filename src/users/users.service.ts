@@ -13,7 +13,7 @@ export class UsersService {
 
   async findAll() {
     const users = await this.userRepository.find({
-      relations: ['responses', 'vacancies'],
+      relations: ['replies', 'vacancies'],
     });
 
     if (users.length === 0) {
