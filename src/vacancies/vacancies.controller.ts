@@ -3,7 +3,7 @@ import { VacanciesService } from './vacancies.service';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
 import { Vacancy } from './entities/vacancy.entity';
 import { UpdateVacancyDto } from './dto/update-vacancy.dto';
-import { title } from 'process';
+import { FilterVacancyDto } from './dto/filter-vacancy.dto';
 
 @Controller('vacancies')
 export class VacanciesController {
@@ -26,13 +26,23 @@ export class VacanciesController {
     return this.vacanciesService.sortByCreatedDate();
   }
 
-  @Get('sorting-by-title')
+  @Get('filter-by-title')
   getByTitle(@Query('title') query: { title: string }) {
-    return this.vacanciesService.sortedByTitle(query.title);
+    return this.vacanciesService.filterByTitle(query.title);
   }
 
-  @Get('sorting-by-username')
+  @Get('filter-by-username')
   getByUsername(@Query('ownersName') query: { ownersName: string }) {
-    return this.vacanciesService.sortedByOwner(query.ownersName);
+    return this.vacanciesService.filterByOwner(query.ownersName);
+  }
+
+  @Post('filter-by-skills')
+  getBySkills(@Body() body: { skills: string[] }) {
+    return this.vacanciesService.filterBySkills(body.skills);
+  }
+
+  @Post('filters')
+  getByFilter(@Body() filterVacancyDto: FilterVacancyDto) {
+    return this.vacanciesService.findWithFilters(filterVacancyDto);
   }
 }

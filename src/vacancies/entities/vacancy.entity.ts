@@ -21,7 +21,7 @@ export class Vacancy {
   @Column()
   description: string;
 
-  @Column('simple-array')
+  @Column('text', { array: true })
   skills: string[];
 
   @ManyToOne(() => User, (user) => user.vacancies)

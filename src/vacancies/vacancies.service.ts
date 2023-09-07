@@ -7,8 +7,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
-import { Repository } from 'typeorm';
+import { ArrayContains, In, Repository } from 'typeorm';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
+import { FilterVacancyDto } from './dto/filter-vacancy.dto';
 import { UpdateVacancyDto } from './dto/update-vacancy.dto';
 import { Vacancy } from './entities/vacancy.entity';
 
@@ -62,6 +63,38 @@ export class VacanciesService {
     return await this.vacancyRepository.findOneBy({ id });
   }
 
+  async findWithFilters(
+    filterVacancyDto: FilterVacancyDto,
+  ): Promise<Vacancy[]> {
+    const { order, orderBy, ownersName, skills, ...rest } = filterVacancyDto;
+    const filterParams: any = rest;
+
+    if (ownersName) {
+      filterParams.owner = {};
+      filterParams.owner.username = ownersName;
+    }
+
+    if (skills) {
+      filterParams.skills = ArrayContains([skills]);
+    }
+    const vacancies = await this.vacancyRepository.find({
+      where: filterParams,
+      order: {
+        [orderBy]: order,
+      },
+      skip: 0,
+      take: 10,
+    });
+
+    if (vacancies.length === 0) {
+      throw new NotFoundException(
+        'Вакансий, удовлетворяющих условиям поиска нет',
+      );
+    }
+
+    return vacancies;
+  }
+
   async sortByCreatedDate(): Promise<Vacancy[]> {
     return await this.vacancyRepository.find({
       order: {
@@ -73,7 +106,7 @@ export class VacanciesService {
     });
   }
 
-  async sortedByTitle(title: string): Promise<Vacancy[]> {
+  async filterByTitle(title: string): Promise<Vacancy[]> {
     const vacancies = await this.vacancyRepository.find({
       where: {
         title,
@@ -87,7 +120,7 @@ export class VacanciesService {
     return vacancies;
   }
 
-  async sortedByOwner(ownersName: string): Promise<Vacancy[]> {
+  async filterByOwner(ownersName: string): Promise<Vacancy[]> {
     const vacancies = await this.vacancyRepository.find({
       relations: {
         owner: true,
@@ -106,5 +139,13 @@ export class VacanciesService {
     }
 
     return vacancies;
+  }
+
+  async filterBySkills(typeOfSkills: string[]): Promise<Vacancy[]> {
+    return await this.vacancyRepository.find({
+      where: {
+        skills: ArrayContains([typeOfSkills]),
+      },
+    });
   }
 }
