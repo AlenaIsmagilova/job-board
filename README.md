@@ -24,3 +24,5 @@
    ```shell
    docker-compose up
    ```
+
+3. Открыть в браузере страницу http://localhost:3000/api/docs

@@ -21,26 +21,6 @@ export class VacanciesController {
     return await this.vacanciesService.updateOne(updateVacancyDto);
   }
 
-  @Get('sorting-by-date')
-  getByDate() {
-    return this.vacanciesService.sortByCreatedDate();
-  }
-
-  @Get('filter-by-title')
-  getByTitle(@Query('title') query: { title: string }) {
-    return this.vacanciesService.filterByTitle(query.title);
-  }
-
-  @Get('filter-by-username')
-  getByUsername(@Query('ownersName') query: { ownersName: string }) {
-    return this.vacanciesService.filterByOwner(query.ownersName);
-  }
-
-  @Post('filter-by-skills')
-  getBySkills(@Body() body: { skills: string[] }) {
-    return this.vacanciesService.filterBySkills(body.skills);
-  }
-
   @Post('filters')
   getByFilter(@Body() filterVacancyDto: FilterVacancyDto) {
     return this.vacanciesService.findWithFilters(filterVacancyDto);
