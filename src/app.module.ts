@@ -11,7 +11,7 @@ import { Vacancy } from './vacancies/entities/vacancy.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'postgres',
       port: 5432,
       username: 'student',
       password: 'student',
