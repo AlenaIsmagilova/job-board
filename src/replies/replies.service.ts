@@ -29,7 +29,7 @@ export class RepliesService {
     const currentVacancy = await this.vacanciesService.findOneById(vacancyId);
 
     if (!currentVacancy) {
-      throw new NotFoundException(`Вакансия с id ${userId} не найдена`);
+      throw new NotFoundException(`Вакансия с id ${vacancyId} не найдена`);
     }
 
     const createdReply = this.replyRepository.create({
