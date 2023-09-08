@@ -24,10 +24,10 @@ export class Vacancy {
   @Column('text', { array: true })
   skills: string[];
 
-  @ManyToOne(() => User, (user) => user.vacancies)
+  @ManyToOne(() => User, (user: User) => user.vacancies)
   owner: User;
 
-  @OneToMany(() => Reply, (reply) => reply.vacancy)
+  @OneToMany(() => Reply, (reply: Reply) => reply.vacancy)
   replies: Reply[];
 
   @CreateDateColumn({ name: 'created_at' })

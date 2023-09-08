@@ -16,7 +16,7 @@ export class RepliesController {
   }
 
   @Patch()
-  update(replyId: number) {
+  update(replyId: number): Promise<void> {
     return this.repliesService.setReplyViewed(replyId);
   }
 }

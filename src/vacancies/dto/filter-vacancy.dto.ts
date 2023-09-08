@@ -1,4 +1,4 @@
-import { IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class FilterVacancyDto {
   @IsOptional()
@@ -18,4 +18,10 @@ export class FilterVacancyDto {
 
   @IsOptional()
   skills: string[];
+
+  @IsNotEmpty()
+  limit: number;
+
+  @IsNotEmpty()
+  offset: number;
 }

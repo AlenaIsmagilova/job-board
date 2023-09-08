@@ -19,20 +19,20 @@ export class RepliesService {
     userId: number,
     vacancyId: number,
     createReplyDto: CreateReplyDto,
-  ) {
+  ): Promise<Reply> {
     const currentUser = await this.usersService.findById(userId);
 
     if (!currentUser) {
-      throw new NotFoundException('Укажите корректный id пользователя');
+      throw new NotFoundException(`Пользователь с id ${userId} не найден`);
     }
 
     const currentVacancy = await this.vacanciesService.findOneById(vacancyId);
 
     if (!currentVacancy) {
-      throw new NotFoundException('Укажите корректный id вакансии');
+      throw new NotFoundException(`Вакансия с id ${userId} не найдена`);
     }
 
-    const createdReply = await this.replyRepository.create({
+    const createdReply = this.replyRepository.create({
       ...createReplyDto,
       user: currentUser,
       vacancy: currentVacancy,

@@ -11,19 +11,15 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  async findAll() {
+  async findAll(): Promise<User[]> {
     const users = await this.userRepository.find({
       relations: ['replies', 'vacancies'],
     });
 
-    if (users.length === 0) {
-      throw new UnauthorizedException();
-    }
-
     return users;
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = this.userRepository.create({ ...createUserDto });
 
     await this.userRepository.save(createdUser);

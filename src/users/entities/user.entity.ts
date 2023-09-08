@@ -23,11 +23,10 @@ export class User {
   @Column()
   phoneNumber: string;
 
-  //любому юзеру может соответствовать какое-то количество откликов, а любому отклику соответствует набор юзеров
-  @OneToMany(() => Reply, (reply) => reply.user)
+  @OneToMany(() => Reply, (reply: Reply) => reply.user)
   replies: Reply[];
 
-  @OneToMany(() => Vacancy, (vacancy) => vacancy.owner)
+  @OneToMany(() => Vacancy, (vacancy: Vacancy) => vacancy.owner)
   vacancies: Vacancy[];
 
   @CreateDateColumn({ name: 'created_at' })

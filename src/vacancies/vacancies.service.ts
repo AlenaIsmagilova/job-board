@@ -2,12 +2,11 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.entity';
+import { Errors } from 'src/constants/constants';
 import { UsersService } from 'src/users/users.service';
-import { ArrayContains, In, Repository } from 'typeorm';
+import { ArrayContains, Repository } from 'typeorm';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
 import { FilterVacancyDto } from './dto/filter-vacancy.dto';
 import { UpdateVacancyDto } from './dto/update-vacancy.dto';
@@ -42,7 +41,7 @@ export class VacanciesService {
     );
 
     if (!ownerOfVacancy) {
-      throw new NotFoundException('Пользователь не найден');
+      throw new NotFoundException(Errors.NotFoundUser);
     }
 
     const currentVacancy = await this.vacancyRepository.findOne({
@@ -51,7 +50,7 @@ export class VacanciesService {
     });
 
     if (ownerOfVacancy.id !== currentVacancy.owner.id) {
-      throw new ForbiddenException('Вы не можете обновлять чужую вакансию');
+      throw new ForbiddenException(Errors.CanNotUpdate);
     }
     const { userId, ...rest } = updateVacancyDto;
     await this.vacancyRepository.update(updateVacancyDto.id, rest);
@@ -82,15 +81,9 @@ export class VacanciesService {
       order: {
         [orderBy]: order,
       },
-      skip: 0,
-      take: 10,
+      skip: filterParams.offset,
+      take: filterParams.limit,
     });
-
-    if (vacancies.length === 0) {
-      throw new NotFoundException(
-        'Вакансий, удовлетворяющих условиям поиска нет',
-      );
-    }
 
     return vacancies;
   }
