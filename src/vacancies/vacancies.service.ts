@@ -65,7 +65,8 @@ export class VacanciesService {
   async findWithFilters(
     filterVacancyDto: FilterVacancyDto,
   ): Promise<Vacancy[]> {
-    const { order, orderBy, ownersName, skills, ...rest } = filterVacancyDto;
+    const { order, orderBy, ownersName, skills, limit, offset, ...rest } =
+      filterVacancyDto;
     const filterParams: any = rest;
 
     if (ownersName) {
@@ -79,10 +80,10 @@ export class VacanciesService {
     const vacancies = await this.vacancyRepository.find({
       where: filterParams,
       order: {
-        [orderBy]: order,
+        [orderBy || 'createdAt']: order,
       },
-      skip: filterParams.offset,
-      take: filterParams.limit,
+      skip: offset,
+      take: limit,
     });
 
     return vacancies;
